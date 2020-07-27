@@ -20,7 +20,7 @@ const canEditDisallowedServiceExpectFalse = ability.can('edit', 'alarme');
 const canEditAllowedServiceExpectTrue = ability.can('edit', 'wartungen');
 
 // The ability does not allow editing of "wartungen" that don"t match the conditions
-const cannotEditDisallowedRecordExpectFalse = ability.cannot(
+const cannotEditDisallowedRecordExpectTrue = ability.cannot(
   'edit',
   subject('wartungen', disallowedDummyWartung)
 );
@@ -32,7 +32,7 @@ const canEditAllowedRecordExpectTrue = ability.can(
 );
 
 // The ability does not allow editing of "wartungen" that don't match the conditions (name $eq 'Wartung mit Sound') on field "notificationSoundId"`
-const cannotEditDisallowedRecordWithFieldExpectFalse = ability.cannot(
+const cannotEditDisallowedRecordWithFieldExpectTrue = ability.cannot(
   'edit',
   subject('wartungen', disallowedDummyWartungWithFIeld),
   'notificationSoundId'
@@ -41,7 +41,7 @@ const cannotEditDisallowedRecordWithFieldExpectFalse = ability.cannot(
 console.log('RESULT', {
   canEditDisallowedServiceExpectFalse,
   canEditAllowedServiceExpectTrue,
-  cannotEditDisallowedRecordExpectFalse,
+  cannotEditDisallowedRecordExpectTrue,
   canEditAllowedRecordExpectTrue,
-  cannotEditDisallowedRecordWithFieldExpectFalse
+  cannotEditDisallowedRecordWithFieldExpectTrue
 });
