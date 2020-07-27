@@ -6,13 +6,22 @@ thanks for this great lib. I've just started using it and like it's abstraction 
 
 I've come over a situation where I can't seem to make all permissions to be fullfilled though.
 
-My use case:
+## How to run
+
+```terminal
+git clone https://github.com/bitflower/casl-rule-intersection-issue
+cd casl-rule-intersection-issue
+npm i
+npm start
+```
+
+## My use case:
 - I want to disallow some records based their on `_id` not being present in an array
 - I want to disallow some record's fields based on the record's `name`property 
 
 I've created 2 rules to define this scenario but it seems that one over rules the other.
 
-The records: 
+### The records: 
 ```
   const dummyWartung = {
     _id: 'abc',
@@ -29,9 +38,16 @@ The records:
   };
 ```
 
-The rules (loaded via `JSON`):
+### The rules (loaded via `JSON`):
 ```
 const rules = [ 
+{ 
+    action: [ 'edit', 'create' ],
+    subject: 'wartungen',
+    conditions: { _id: { '$nin': [ 'xxxx', 'anotherid' ] } }, // Disallow these ids
+    reason: '',
+    inverted: false 
+},
 { 
     action: [ 'edit', 'create' ],
     subject: 'wartungen',
@@ -39,13 +55,6 @@ const rules = [
     fields: [ 'notificationSoundId' ],
     reason: '',
     inverted: true 
-},
-{ 
-    action: [ 'edit', 'create' ],
-    subject: 'wartungen',
-    conditions: { _id: { '$nin': [ 'xxxx', 'anotherid' ] } }, // Disallow these ids
-    reason: '',
-    inverted: false 
 }
 ]
 ```
@@ -58,3 +67,16 @@ If not how could I achieve limiting certain records to a property A and some oth
 
 Thanks upfront for some input!
 
+## Bug
+
+The 5 rules resolve as seen below:
+
+```terminal
+{
+canEditDisallowedServiceExpectFalse: false,
+canEditAllowedServiceExpectTrue: true,
+cannotEditDisallowedRecordExpectTrue: true,
+canEditAllowedRecordExpectTrue: true,
+cannotEditDisallowedRecordWithFieldExpectTrue: true 
+}
+```
